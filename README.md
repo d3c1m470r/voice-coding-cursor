@@ -10,6 +10,24 @@ This project is a Python-based, hands-free coding assistant that uses the Whispe
 - **Pre-loaded Model:** The Whisper model is loaded at startup to ensure a fast and seamless transcription experience.
 - **Customizable:** Easily configurable silence threshold and microphone device index to suit your environment.
 
+## Language Support
+
+This application defaults to English but can be configured to transcribe any of the 99 languages supported by the Whisper model. This includes languages like Spanish, French, German, Japanese, Chinese, Russian, and many more.
+
+To change the language, you need to edit one line in `recorder.py`:
+
+1.  Open the `recorder.py` file.
+2.  Find the `transcribe_audio` function.
+3.  In that function, locate the line that calls `WHISPER_MODEL.transcribe(...)`.
+4.  Change the `language="en"` parameter to the language you want. For example, for German, you would change it to `language="de"`.
+
+```python
+# In recorder.py, inside the transcribe_audio function:
+result = WHISPER_MODEL.transcribe(audio_float32, fp16=False, language="de") # Changed "en" to "de"
+```
+
+For a full list of supported languages and their two-letter codes, please refer to the [official Whisper documentation](https://github.com/openai/whisper/blob/main/whisper/tokenizer.py).
+
 ## File Overview
 
 - **`main.py`**: The main entry point of the application. It handles hotkey listening and orchestrates the recording and transcription process.
