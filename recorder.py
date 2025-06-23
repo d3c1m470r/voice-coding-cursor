@@ -13,7 +13,7 @@ CHUNK_DURATION_S = 0.5  # Duration of each audio chunk in seconds
 CHUNK_SAMPLES = int(CHUNK_DURATION_S * SAMPLE_RATE)
 SILENCE_THRESHOLD = 1000  # RMS value to determine silence. This might need adjustment based on your mics input level.
 SILENCE_DURATION_S = 2.0  # Seconds of silence to trigger end of recording.
-DEVICE_INDEX = 8 # Set to your mics device value. It is in the list of devices after running check_devices.py
+DEVICE_INDEX = 7 # Using 'pulse' directly (device 7) instead of 'default' for stability.
 
 # --- Global State ---
 recording_finished = threading.Event()
