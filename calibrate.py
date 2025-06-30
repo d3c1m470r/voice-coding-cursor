@@ -2,11 +2,7 @@ import sounddevice as sd
 import numpy as np
 import time
 
-# --- Configuration from recorder.py ---
-SAMPLE_RATE = 16000
-CHUNK_DURATION_S = 0.5
-CHUNK_SAMPLES = int(CHUNK_DURATION_S * SAMPLE_RATE)
-DEVICE_INDEX = 8 # The device we're testing
+from config import SAMPLE_RATE, CHUNK_SAMPLES, DEVICE_INDEX
 
 def calibrate_microphone():
     """

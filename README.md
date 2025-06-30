@@ -14,16 +14,15 @@ This project is a Python-based, hands-free coding assistant that uses the Whispe
 
 This application defaults to English but can be configured to transcribe any of the 99 languages supported by the Whisper model. This includes languages like Spanish, French, German, Japanese, Chinese, Russian, and many more.
 
-To change the language, you need to edit one line in `recorder.py`:
+To change the language, you need to edit one line in `config.py`:
 
-1.  Open the `recorder.py` file.
-2.  Find the `transcribe_audio` function.
-3.  In that function, locate the line that calls `WHISPER_MODEL.transcribe(...)`.
-4.  Change the `language="en"` parameter to the language you want. For example, for German, you would change it to `language="de"`.
+1.  Open the `config.py` file.
+2.  Find the `LANGUAGE` variable.
+3.  Change the `LANGUAGE` variable to the language you want. For example, for German, you would change it to `"de"`.
 
 ```python
-# In recorder.py, inside the transcribe_audio function:
-result = WHISPER_MODEL.transcribe(audio_float32, fp16=False, language="de") # Changed "en" to "de"
+# In config.py:
+LANGUAGE = "de" # Changed "en" to "de"
 ```
 
 For a full list of supported languages and their two-letter codes, please refer to the [official Whisper documentation](https://github.com/openai/whisper/blob/main/whisper/tokenizer.py).
@@ -32,6 +31,7 @@ For a full list of supported languages and their two-letter codes, please refer 
 
 - **`main.py`**: The main entry point of the application. It handles hotkey listening and orchestrates the recording and transcription process.
 - **`recorder.py`**: Contains all the logic for audio recording, silence detection, and interfacing with the Whisper model for transcription.
+- **`config.py`**: The central configuration file. All settings, such as microphone device index, silence threshold, language, and hotkeys, are managed here.
 - **`check_devices.py`**: A utility script to list all available audio devices on your system, helping you find the correct index for your microphone.
 - **`calibrate.py`**: A helper script to calibrate the `SILENCE_THRESHOLD`. It prints the real-time audio level of your microphone, allowing you to find the perfect value to distinguish between ambient noise and speech.
 - **`requirements.txt`**: A list of all the necessary Python packages for this project.
@@ -57,9 +57,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Configure Your Microphone
+### 3. Configure Your Application
 
-You'll need to tell the application which microphone to use and how sensitive it should be in case default values dont work for your devices.
+You'll need to tell the application which microphone to use, how sensitive it should be, and what hotkey to use. All settings are in the `config.py` file.
 
 1.  **Find Your Device Index:** Run the `check_devices.py` script to see a list of your audio devices.
 
@@ -69,7 +69,7 @@ You'll need to tell the application which microphone to use and how sensitive it
 
     Find your microphone in the list and note its `index` number.
 
-2.  **Set the Device Index:** Open `recorder.py` and change the `DEVICE_INDEX` variable to the index you just found.
+2.  **Set the Device Index:** Open `config.py` and change the `DEVICE_INDEX` variable to the index you just found.
 
 3.  **Calibrate the Silence Threshold:** Run the `calibrate.py` script.
 
@@ -77,7 +77,9 @@ You'll need to tell the application which microphone to use and how sensitive it
     python3 calibrate.py
     ```
 
-    Stay silent for a moment to see the audio level of your background noise, then speak normally. Choose a value for `SILENCE_THRESHOLD` that is higher than your background noise but lower than your speaking volume. Update the `SILENCE_THRESHOLD` variable in `recorder.py`.
+    Stay silent for a moment to see the audio level of your background noise, then speak normally. Choose a value for `SILENCE_THRESHOLD` that is higher than your background noise but lower than your speaking volume. Update the `SILENCE_THRESHOLD` variable in `config.py`.
+
+4.  **(Optional) Configure the Hotkey:** Open `config.py` and change the `HOTKEY_TOGGLE` variable. The key combination must be a string in a format that the `pynput` library understands. For example, you can use `'<ctrl>+<alt>+h'` or `'<cmd>+<shift>+r'`.
 
 ### 4. Run the Application
 
@@ -94,8 +96,8 @@ The application will load the Whisper model and then wait for you to press the h
 - **Press `<ctrl>+<alt>+s`** to activate the voice mode.
 - The application will start listening. Once it detects you speaking, it will record.
 
-***WARNING*** it will type anything you say where you currently stand with your cursor, then press enter, so you can prompt the models directly by simply speaking.
+**_WARNING_** it will type anything you say where you currently stand with your cursor, then press enter, so you can prompt the models directly by simply speaking.
 
 - When you stop speaking, it will automatically transcribe the audio and type it out.
 - The default value is 2 seconds of silence, so if you stay quiet, the text gets typed out with an enter at the end.
-- **Press `<ctrl>+<alt>+s`** again to deactivate the voice mode. 
+- **Press `<ctrl>+<alt>+s`** again to deactivate the voice mode.
