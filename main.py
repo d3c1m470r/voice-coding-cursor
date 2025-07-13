@@ -1,10 +1,7 @@
 from pynput import keyboard
 from recorder import record_until_silence, transcribe_audio, initialize_whisper
 import threading
-
-# --- Configuration ---
-# Note: Using GlobalHotKeys is often more reliable for system-wide hotkeys.
-HOTKEY_TOGGLE = '<ctrl>+<alt>+s'
+from config import HOTKEY_TOGGLE
 
 # --- Global State ---
 voice_mode_thread = None

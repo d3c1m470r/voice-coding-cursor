@@ -4,16 +4,16 @@ import numpy as np
 import collections
 import whisper
 import threading
-
-# --- Configuration ---
-SAMPLE_RATE = 16000  # Hertz (Whisper prefers 16kHz)
-OUTPUT_FILENAME = "output.wav"
-CHANNELS = 1  # Mono
-CHUNK_DURATION_S = 0.5  # Duration of each audio chunk in seconds
-CHUNK_SAMPLES = int(CHUNK_DURATION_S * SAMPLE_RATE)
-SILENCE_THRESHOLD = 1000  # RMS value to determine silence. This might need adjustment based on your mics input level.
-SILENCE_DURATION_S = 2.0  # Seconds of silence to trigger end of recording.
-DEVICE_INDEX = 7 # Using 'pulse' directly (device 7) instead of 'default' for stability.
+from config import (
+    SAMPLE_RATE,
+    CHANNELS,
+    CHUNK_DURATION_S,
+    CHUNK_SAMPLES,
+    SILENCE_THRESHOLD,
+    SILENCE_DURATION_S,
+    DEVICE_INDEX,
+    LANGUAGE
+)
 
 # --- Global State ---
 recording_finished = threading.Event()
@@ -113,7 +113,7 @@ def transcribe_audio(audio_data):
     audio_1d = audio_data.flatten()
     audio_float32 = audio_1d.astype(np.float32) / 32768.0
 
-    result = WHISPER_MODEL.transcribe(audio_float32, fp16=False, language="en")
+    result = WHISPER_MODEL.transcribe(audio_float32, fp16=False, language=LANGUAGE)
 
     print("Transcription complete.")
     return result['text']
